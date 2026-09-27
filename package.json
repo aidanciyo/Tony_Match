@@ -1,0 +1,14 @@
+{
+  "name": "tony-match",
+  "version": "1.0.0",
+  "description": "Match con el CIFP Tony Gallardo: descubre tu familia profesional deslizando tarjetas.",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes http-server . -p 8080 -c-1",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}
