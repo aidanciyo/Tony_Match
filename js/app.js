@@ -4,6 +4,9 @@
  *
  * Añade ?kiosco a la URL para usarla en una pantalla compartida (jornadas de puertas
  * abiertas): vuelve sola al inicio tras dos minutos sin actividad.
+ *
+ * Para ocultar el botón de compartir (por ejemplo, al incrustarla en otra web), define
+ * window.TonyMatchConfig = { compartir: false } antes de cargar este archivo.
  */
 (function () {
   'use strict';
@@ -35,6 +38,7 @@
   var SELLO = { derecha: 'like', izquierda: 'nope', arriba: 'super' };
   var REDUCIR_MOVIMIENTO = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var KIOSCO = /[?&]kiosco\b/.test(window.location.search);
+  var COMPARTIR = !KIOSCO && (window.TonyMatchConfig || {}).compartir !== false;
 
   var app = {
     motor: null,
@@ -893,7 +897,7 @@
       '<header class="res-barra">',
       '<button class="icono-btn" type="button" data-res="volver" aria-label="' + (previo ? 'Volver a tu match' : 'Volver a las tarjetas') + '">' + icono('i-atras') + '</button>',
       '<h1 class="res-barra__titulo" id="titulo-resultado" tabindex="-1">' + (esMatch ? 'Tu match' : 'Familia con química') + '</h1>',
-      KIOSCO ? '<span></span>' : '<button class="icono-btn" type="button" data-res="compartir" aria-label="Compartir resultado">' + icono('i-compartir') + '</button>',
+      COMPARTIR ? '<button class="icono-btn" type="button" data-res="compartir" aria-label="Compartir resultado">' + icono('i-compartir') + '</button>' : '<span></span>',
       '</header>',
       htmlHeroe(f, r, esMatch),
       seccion(esMatch ? '💬 Por qué hacéis match' : '💬 Lo que tenéis en común', htmlRazones(m.razones(id, 4), f)),
@@ -905,7 +909,7 @@
       seccion('✍️ ¿Cómo me apunto?', htmlAdmision(recs)),
       seccion('📍 Ven a conocernos', htmlContacto()),
       '<div class="res-acciones">',
-      KIOSCO ? '' : '<button class="btn btn--grad" type="button" data-res="compartir">' + icono('i-compartir') + 'Compartir mi match</button>',
+      COMPARTIR ? '<button class="btn btn--grad" type="button" data-res="compartir">' + icono('i-compartir') + 'Compartir mi match</button>' : '',
       '<button class="btn btn--suave" type="button" data-res="seguir">Seguir deslizando</button>',
       '<button class="btn btn--suave" type="button" data-res="reiniciar">' + icono('i-reiniciar') + 'Empezar de nuevo</button>',
       '</div>',
@@ -931,11 +935,20 @@
     var url = window.location.href.split('#')[0].split('?')[0];
     var texto = '💘 ¡He hecho match con ' + f.nombre + ' (' + r.pct + ' %) en el CIFP Tony Gallardo! ¿Y tú con qué familia profesional haces match?';
     if (navigator.share) {
-      navigator.share({ title: 'Match con el CIFP Tony Gallardo', text: texto, url: url }).catch(function () { /* cancelado */ });
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(texto + ' ' + url).then(
+      navigator.share({ title: 'Match con el CIFP Tony Gallardo', text: texto, url: url }).catch(function (err) {
+        // Si la persona cancela no hacemos nada; si el navegador lo bloquea (p. ej. en un iframe), copiamos.
+        if (!err || err.name !== 'AbortError') copiar(texto + ' ' + url, url);
+      });
+    } else {
+      copiar(texto + ' ' + url, url);
+    }
+  }
+
+  function copiar(texto, url) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).then(
         function () { toast('📋 Copiado. ¡Pégalo donde quieras!'); },
-        function () { toast('No se ha podido copiar el enlace'); }
+        function () { toast('Comparte este enlace: ' + url); }
       );
     } else {
       toast('Comparte este enlace: ' + url);
