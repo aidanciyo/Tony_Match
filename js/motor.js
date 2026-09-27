@@ -1,5 +1,5 @@
 /*
- * Motor de «Match con el CIFP Tony Gallardo».
+ * Motor de «Haz Match con el CIFP Tony Gallardo».
  *
  * Cada respuesta suma (o resta) puntos a las familias profesionales. La afinidad de
  * una familia es la proporción de puntos conseguidos sobre los posibles, suavizada

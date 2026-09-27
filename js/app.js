@@ -1,5 +1,5 @@
 /*
- * Interfaz de «Match con el CIFP Tony Gallardo»: pantallas, tarjetas deslizables,
+ * Interfaz de «Haz Match con el CIFP Tony Gallardo»: pantallas, tarjetas deslizables,
  * pantalla de match y resultados. La lógica de puntuación vive en motor.js.
  *
  * Añade ?kiosco a la URL para usarla en una pantalla compartida (jornadas de puertas
@@ -935,7 +935,7 @@
     var url = window.location.href.split('#')[0].split('?')[0];
     var texto = '💘 ¡He hecho match con ' + f.nombre + ' (' + r.pct + ' %) en el CIFP Tony Gallardo! ¿Y tú con qué familia profesional haces match?';
     if (navigator.share) {
-      navigator.share({ title: 'Match con el CIFP Tony Gallardo', text: texto, url: url }).catch(function (err) {
+      navigator.share({ title: 'Haz Match con el CIFP Tony Gallardo', text: texto, url: url }).catch(function (err) {
         // Si la persona cancela no hacemos nada; si el navegador lo bloquea (p. ej. en un iframe), copiamos.
         if (!err || err.name !== 'AbortError') copiar(texto + ' ' + url, url);
       });

@@ -1,5 +1,5 @@
 /*
- * Mazo de tarjetas de «Match con el CIFP Tony Gallardo».
+ * Mazo de tarjetas de «Haz Match con el CIFP Tony Gallardo».
  *
  * Tipos:
  *   gusto     Afirmación sobre gustos, manías o situaciones. Like / paso / superlike.

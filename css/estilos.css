@@ -1,4 +1,4 @@
-/* Match con el CIFP Tony Gallardo — estilos
+/* Haz Match con el CIFP Tony Gallardo — estilos
    Paleta inspirada en el logo: azul marino de las olas y el granate/frambuesa de la mano. */
 
 @font-face {
@@ -173,8 +173,8 @@ a { color: inherit; }
   background: var(--grad);
   color: #fff;
   align-items: center;
-  justify-content: center;
   text-align: center;
+  overflow-y: auto;
   padding: max(28px, env(safe-area-inset-top)) 24px max(18px, env(safe-area-inset-bottom));
   overflow: hidden;
 }
@@ -219,6 +219,11 @@ a { color: inherit; }
 }
 .inicio__datos li { background: rgba(255, 255, 255, .18); padding: 6px 11px; border-radius: 999px; }
 .inicio__pie { position: relative; z-index: 1; margin: 16px 0 0; font-size: .75rem; opacity: .85; max-width: 330px; }
+@media (max-height: 660px) {
+  .inicio__logo { width: 124px; height: 124px; }
+  .inicio__titulo { margin-top: 16px; }
+  .inicio__texto { margin-bottom: 18px; }
+}
 
 .burbujas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .burbuja {

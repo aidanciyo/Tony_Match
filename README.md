@@ -1,4 +1,4 @@
-# 💘 Match con el CIFP Tony Gallardo
+# 💘 Haz Match con el CIFP Tony Gallardo
 
 Web app al estilo Tinder para descubrir con qué **familia profesional** del
 [CIFP Tony Gallardo](https://www3.gobiernodecanarias.org/medusa/edublog/cifptonygallardo/)
@@ -96,12 +96,24 @@ python3 -m http.server 8080
 
 **Publicarla**
 
+- **En tu servidor, en la carpeta `Tony_Match`**, con un solo comando desde un ordenador con
+  `ssh` (Linux, Mac, o Windows con Git Bash o WSL):
+
+  ```bash
+  ./desplegar.sh usuario@tu-servidor /var/www/html ~/.ssh/tu-clave
+  ```
+
+  Sube solo los archivos de la web a `/var/www/html/Tony_Match` (cambia la ruta si tu
+  servidor publica otra carpeta). Si el servidor tiene `git`, también vale entrar en él y
+  clonar el repositorio en esa carpeta. Y sin terminal: sube por SFTP (FileZilla, WinSCP…)
+  `index.html`, `manifest.webmanifest` y las carpetas `css`, `js` y `assets` a una carpeta
+  `Tony_Match`.
 - **GitHub Pages**: *Settings → Pages → Deploy from a branch*, rama principal y carpeta raíz.
 - **Cualquier hosting estático**: basta con subir la carpeta tal cual.
 - **Dentro del blog del centro**, con un iframe:
 
   ```html
-  <iframe src="https://TU-DIRECCION/" title="Match con el CIFP Tony Gallardo"
+  <iframe src="https://TU-DIRECCION/" title="Haz Match con el CIFP Tony Gallardo"
           width="420" height="820" style="border:0;border-radius:24px;max-width:100%"></iframe>
   ```
 
