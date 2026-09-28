@@ -123,8 +123,7 @@ botón de compartir.
 
 **Pantalla completa**: al pulsar «Empezar a deslizar» la app pasa a pantalla completa en
 Android, tablets y ordenadores (los navegadores no permiten hacerlo antes del primer toque).
-En iPhone, Safari no lo permite en webs: la portada muestra cómo añadirla a la pantalla de
-inicio, y desde ese icono se abre sin barras del navegador.
+En iPhone, Safari no lo permite en webs, así que allí se ve normal.
 
 También se puede **instalar en el móvil** («Añadir a pantalla de inicio»); en Android se abre
 directamente a pantalla completa.

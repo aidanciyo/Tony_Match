@@ -9,7 +9,7 @@
  * window.TonyMatchConfig = { compartir: false } antes de cargar este archivo.
  *
  * Al pulsar «Empezar a deslizar» la app pasa a pantalla completa donde el navegador lo
- * permite (los navegadores exigen un toque; en iPhone solo instalándola en la pantalla de inicio).
+ * permite (hace falta ese toque; en iPhone, Safari no lo permite y se ve normal).
  */
 (function () {
   'use strict';
@@ -42,7 +42,6 @@
   var REDUCIR_MOVIMIENTO = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var KIOSCO = /[?&]kiosco\b/.test(window.location.search);
   var COMPARTIR = !KIOSCO && (window.TonyMatchConfig || {}).compartir !== false;
-  var ES_IPHONE = /iPhone|iPod/.test(navigator.userAgent);
   var APP_INSTALADA = navigator.standalone === true ||
     !!(window.matchMedia && window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches);
 
@@ -112,7 +111,6 @@
         return '<span class="burbuja" style="' + estilo + '">' + e + '</span>';
       }).join('');
     }
-    $('#consejo-iphone').hidden = !ES_IPHONE || APP_INSTALADA;
     $('#btn-comenzar').addEventListener('click', function () {
       pantallaCompleta();
       mostrarPantalla('pantalla-perfil');
