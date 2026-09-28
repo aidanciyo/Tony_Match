@@ -7,6 +7,9 @@
  *
  * Para ocultar el botón de compartir (por ejemplo, al incrustarla en otra web), define
  * window.TonyMatchConfig = { compartir: false } antes de cargar este archivo.
+ *
+ * Al pulsar «Empezar a deslizar» la app pasa a pantalla completa donde el navegador lo
+ * permite (los navegadores exigen un toque; en iPhone solo instalándola en la pantalla de inicio).
  */
 (function () {
   'use strict';
@@ -39,6 +42,9 @@
   var REDUCIR_MOVIMIENTO = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var KIOSCO = /[?&]kiosco\b/.test(window.location.search);
   var COMPARTIR = !KIOSCO && (window.TonyMatchConfig || {}).compartir !== false;
+  var ES_IPHONE = /iPhone|iPod/.test(navigator.userAgent);
+  var APP_INSTALADA = navigator.standalone === true ||
+    !!(window.matchMedia && window.matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches);
 
   var app = {
     motor: null,
@@ -106,7 +112,22 @@
         return '<span class="burbuja" style="' + estilo + '">' + e + '</span>';
       }).join('');
     }
-    $('#btn-comenzar').addEventListener('click', function () { mostrarPantalla('pantalla-perfil'); });
+    $('#consejo-iphone').hidden = !ES_IPHONE || APP_INSTALADA;
+    $('#btn-comenzar').addEventListener('click', function () {
+      pantallaCompleta();
+      mostrarPantalla('pantalla-perfil');
+    });
+  }
+
+  // Los navegadores solo permiten la pantalla completa justo después de un toque o una tecla.
+  function pantallaCompleta() {
+    var raiz = document.documentElement;
+    var pedir = raiz.requestFullscreen || raiz.webkitRequestFullscreen;
+    if (APP_INSTALADA || !pedir || document.fullscreenElement || document.webkitFullscreenElement) return;
+    try {
+      var promesa = pedir.call(raiz, { navigationUI: 'hide' });
+      if (promesa && promesa.catch) promesa.catch(function () { /* no permitida aquí (p. ej. en un iframe) */ });
+    } catch { /* sin pantalla completa */ }
   }
 
   function prepararPerfil() {
@@ -132,9 +153,12 @@
       siguiente.focus();
     });
     $('#input-nombre').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); empezarPartida(); }
+      if (e.key === 'Enter') { e.preventDefault(); pantallaCompleta(); empezarPartida(); }
     });
-    $('#btn-jugar').addEventListener('click', empezarPartida);
+    $('#btn-jugar').addEventListener('click', function () {
+      pantallaCompleta();
+      empezarPartida();
+    });
     $$('[data-ir]').forEach(function (b) {
       b.addEventListener('click', function () { mostrarPantalla(b.dataset.ir); });
     });

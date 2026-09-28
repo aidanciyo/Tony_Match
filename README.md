@@ -113,7 +113,7 @@ python3 -m http.server 8080
 - **Dentro del blog del centro**, con un iframe:
 
   ```html
-  <iframe src="https://TU-DIRECCION/" title="Haz Match con el CIFP Tony Gallardo"
+  <iframe src="https://TU-DIRECCION/" title="Haz Match con el CIFP Tony Gallardo" allow="fullscreen"
           width="420" height="820" style="border:0;border-radius:24px;max-width:100%"></iframe>
   ```
 
@@ -121,7 +121,13 @@ python3 -m http.server 8080
 `?kiosco` a la dirección. La app vuelve sola al inicio tras dos minutos sin uso y oculta el
 botón de compartir.
 
-También se puede **instalar en el móvil** («Añadir a pantalla de inicio»).
+**Pantalla completa**: al pulsar «Empezar a deslizar» la app pasa a pantalla completa en
+Android, tablets y ordenadores (los navegadores no permiten hacerlo antes del primer toque).
+En iPhone, Safari no lo permite en webs: la portada muestra cómo añadirla a la pantalla de
+inicio, y desde ese icono se abre sin barras del navegador.
+
+También se puede **instalar en el móvil** («Añadir a pantalla de inicio»); en Android se abre
+directamente a pantalla completa.
 
 ## Editar los contenidos
 

@@ -218,6 +218,7 @@ a { color: inherit; }
   font-weight: 600;
 }
 .inicio__datos li { background: rgba(255, 255, 255, .18); padding: 6px 11px; border-radius: 999px; }
+.inicio__consejo { margin: 14px 0 0; max-width: 300px; font-size: .8rem; font-weight: 600; line-height: 1.4; opacity: .92; }
 .inicio__pie { position: relative; z-index: 1; margin: 16px 0 0; font-size: .75rem; opacity: .85; max-width: 330px; }
 @media (max-height: 660px) {
   .inicio__logo { width: 124px; height: 124px; }
