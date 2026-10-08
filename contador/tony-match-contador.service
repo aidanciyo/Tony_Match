@@ -1,0 +1,16 @@
+[Unit]
+Description=Contador de visitas de Haz Match (CIFP Tony Gallardo)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/tony-match-contador
+ExecStart=/usr/bin/node /opt/tony-match-contador/servidor.js
+Environment=PORT=3100
+Environment=HOST=127.0.0.1
+User=www-data
+Group=www-data
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

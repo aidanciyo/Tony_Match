@@ -218,6 +218,29 @@ a { color: inherit; }
   font-weight: 600;
 }
 .inicio__datos li { background: rgba(255, 255, 255, .18); padding: 6px 11px; border-radius: 999px; }.inicio__pie { position: relative; z-index: 1; margin: 16px 0 0; font-size: .75rem; opacity: .85; max-width: 330px; }
+
+/* Contador de visitas: arriba a la derecha de la portada */
+.contador {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .34);
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  animation: aparecer .4s ease both;
+}
+.contador svg { width: 18px; height: 18px; flex: none; }
+.contador__numero { min-width: 1ch; }
 @media (max-height: 660px) {
   .inicio__logo { width: 124px; height: 124px; }
   .inicio__titulo { margin-top: 16px; }

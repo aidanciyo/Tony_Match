@@ -148,10 +148,57 @@ correcto.
 - Duración de Cuidados Auxiliares de Enfermería y requisitos concretos de los IFC+21.
 - Plazos de admisión de cada curso (ahora figuran los de 2026 como referencia).
 
+## Contador de visitas únicas
+
+La portada muestra cuántos navegadores distintos han abierto la web (icono de persona arriba a
+la derecha). La primera vez, cada navegador genera un código aleatorio y anónimo, lo guarda en su
+almacenamiento local y lo envía en cada visita. El servidor solo cuenta códigos distintos: no
+guarda IPs, nombres ni respuestas.
+
+Limitaciones: una persona con dos dispositivos cuenta dos veces; borrar los datos del navegador o
+usar la navegación privada cuenta de nuevo, y no es a prueba de manipulación. Si la API no
+responde o no está configurada, el contador simplemente no aparece.
+
+**Puesta en marcha en tu servidor** (necesita Node.js 18 o superior: `node -v`):
+
+1. Copia la carpeta `contador/` a tu servidor, por ejemplo en `/opt/tony-match-contador/`, y
+   prepara la carpeta de datos:
+
+   ```bash
+   sudo mkdir -p /opt/tony-match-contador/datos
+   sudo chown -R www-data:www-data /opt/tony-match-contador
+   ```
+
+2. Instala el servicio para que arranque solo y se mantenga activo:
+
+   ```bash
+   sudo cp /opt/tony-match-contador/tony-match-contador.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now tony-match-contador
+   ```
+
+   Si `which node` no devuelve `/usr/bin/node`, cambia la ruta en el archivo del servicio.
+
+3. Haz que tu web envíe `/Tony_Match/api/visitas` a ese puerto. Con nginx, dentro del bloque
+   `server` de tu web:
+
+   ```nginx
+   location = /Tony_Match/api/visitas {
+       proxy_pass http://127.0.0.1:3100/api/visitas;
+   }
+   ```
+
+   Después, `sudo nginx -t && sudo systemctl reload nginx`. Con Apache (módulo `mod_proxy`), la
+   línea equivalente es `ProxyPass "/Tony_Match/api/visitas" "http://127.0.0.1:3100/api/visitas"`.
+
+4. Comprueba que responde: `curl https://tu-dominio/Tony_Match/api/visitas` debe devolver
+   `{"personas":N}`.
+
 ## Privacidad y accesibilidad
 
-- Sin registro, sin cookies, sin analítica y sin peticiones a terceros (las tipografías van
-  incluidas). Las respuestas no salen del dispositivo.
+- Sin registro, sin cookies, sin analítica de terceros y sin peticiones a terceros (las
+  tipografías van incluidas). Las respuestas no salen del dispositivo. El contador de
+  visitas solo envía un código aleatorio y anónimo a tu propio servidor.
 - Todo se puede hacer con botones o teclado, con etiquetas y avisos para lectores de pantalla.
   Respeta «reducir movimiento» y el modo oscuro del sistema.
 
@@ -164,7 +211,9 @@ js/datos.js             Datos del centro
 js/tarjetas.js          Mazo de tarjetas
 js/motor.js             Puntuación, selección adaptativa y condiciones de match
 js/app.js               Interfaz: gestos, match y resultados
+contador/servidor.js    API del contador de visitas (Node.js, sin dependencias)
 tests/motor.test.js     Pruebas del motor y los datos (node --test)
+tests/contador.test.js  Pruebas de la API del contador
 assets/                 Logo, iconos de la app y tipografías
 ```
 

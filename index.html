@@ -19,6 +19,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="preload" href="assets/fonts/outfit-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/estilos.css">
+  <script>window.TonyMatchConfig = { contador: 'api/visitas' };</script>
   <script defer src="js/datos.js"></script>
   <script defer src="js/tarjetas.js"></script>
   <script defer src="js/motor.js"></script>
@@ -30,6 +31,7 @@
     <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
     <symbol id="i-estrella" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.7 6.3.9-4.55 4.45 1.07 6.27L12 17.15l-5.62 2.97 1.07-6.27L2.9 9.4l6.3-.9z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></symbol>
     <symbol id="i-corazon" viewBox="0 0 24 24"><path d="M12 20.6s-7.4-4.5-9.4-9C1.2 8.3 3 4.6 6.6 4.2c2-.2 3.8.8 5.4 2.8 1.6-2 3.4-3 5.4-2.8 3.6.4 5.4 4.1 4 7.4-2 4.5-9.4 9-9.4 9z" fill="currentColor"/></symbol>
+    <symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M4.5 20.5c.8-3.7 3.9-5.8 7.5-5.8s6.7 2.1 7.5 5.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
     <symbol id="i-corazon-chispa" viewBox="0 0 24 24"><path d="M11 20.2s-6.7-4.1-8.5-8.2C1.2 9 2.8 5.7 6 5.3c1.8-.2 3.4.7 5 2.5 1.6-1.8 3.2-2.7 5-2.5 3.2.4 4.8 3.7 3.6 6.7-1.8 4.1-8.6 8.2-8.6 8.2z" fill="currentColor"/><path d="M20.2 1.2l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z" fill="currentColor"/></symbol>
     <symbol id="i-deshacer" viewBox="0 0 24 24"><path d="M4.5 9.5h10a5.25 5.25 0 010 10.5H9" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 5.5l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -51,6 +53,10 @@
     <!-- Bienvenida -->
     <section class="pantalla pantalla--inicio" id="pantalla-inicio" aria-labelledby="titulo-app">
       <div class="burbujas" id="burbujas" aria-hidden="true"></div>
+      <div class="contador" id="contador" role="img" title="Personas que han visitado la web" hidden>
+        <svg aria-hidden="true" focusable="false"><use href="#i-persona"/></svg>
+        <span class="contador__numero" id="contador-numero">0</span>
+      </div>
       <div class="inicio">
         <img class="inicio__logo" src="assets/logo.webp" alt="Logotipo del CIFP Tony Gallardo" width="176" height="176">
         <h1 class="inicio__titulo" id="titulo-app" tabindex="-1"><span class="script">Haz Match</span> con el CIFP Tony Gallardo</h1>
@@ -59,7 +65,7 @@
         <ul class="inicio__datos">
           <li>⏱️ 3 minutos</li>
           <li>🙈 Sin registro</li>
-          <li>🔒 Nada sale de tu móvil</li>
+          <li>🔒 Tus respuestas no salen de tu móvil</li>
         </ul>      </div>
       <p class="inicio__pie">9 familias profesionales · 20 ciclos e itinerarios · La Isleta, Las Palmas de Gran Canaria</p>
     </section>

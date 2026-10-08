@@ -1038,7 +1038,7 @@
       '<h3 class="info__subtitulo">Sobre esta app</h3>' +
       '<ul class="info__lista">' +
       '<li>Desliza tarjetas sobre tus gustos, planes y manías. Cuando una familia profesional acumula suficientes likes y encaja contigo claramente mejor que las demás… ¡match!</li>' +
-      '<li>Todo ocurre en tu dispositivo: no se guardan ni se envían tus respuestas.</li>' +
+      '<li>Tus respuestas no salen de tu dispositivo. La portada solo envía un código aleatorio y anónimo para no contar dos veces el mismo navegador.</li>' +
       '<li>Los perfiles de las tarjetas son personajes de ejemplo.</li>' +
       '<li>El resultado es orientativo: habla con el departamento de orientación del centro.</li></ul>' +
       '<div class="likes__pie"><button class="btn btn--suave" type="button" data-accion="reiniciar">' + icono('i-reiniciar') + 'Empezar de nuevo</button></div>';
@@ -1059,6 +1059,63 @@
       elegirAvatar($('.avatar-opcion'));
     }
     mostrarPantalla('pantalla-inicio');
+  }
+
+  // ---------- Contador de visitas únicas (portada) ----------
+  // Cada navegador guarda un código aleatorio y anónimo la primera vez y lo envía en cada visita;
+  // el servidor solo cuenta códigos distintos (ver contador/servidor.js). Sin servidor, no se muestra.
+  var CLAVE_VISITANTE = 'tm-visitante';
+
+  function codigoNuevo() {
+    var bytes = new Uint8Array(16);
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(bytes);
+    else for (var i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+    return Array.prototype.map.call(bytes, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+  }
+
+  // Código de este navegador; null si el almacenamiento está bloqueado (p. ej. en navegación privada).
+  function codigoVisitante() {
+    try {
+      var codigo = localStorage.getItem(CLAVE_VISITANTE);
+      if (!/^[a-f0-9]{32}$/.test(codigo || '')) {
+        codigo = codigoNuevo();
+        localStorage.setItem(CLAVE_VISITANTE, codigo);
+      }
+      return codigo;
+    } catch {
+      return null;
+    }
+  }
+
+  function peticionContador(url, cuerpo) {
+    var control = typeof AbortController === 'function' ? new AbortController() : null;
+    var limite = control ? setTimeout(function () { control.abort(); }, 5000) : null;
+    return fetch(url, {
+      method: cuerpo ? 'POST' : 'GET',
+      headers: cuerpo ? { 'Content-Type': 'application/json' } : {},
+      body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+      cache: 'no-store',
+      signal: control ? control.signal : undefined
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).finally(function () { clearTimeout(limite); });
+  }
+
+  function iniciarContador() {
+    var url = (window.TonyMatchConfig || {}).contador;
+    if (!url) return;
+    var codigo = codigoVisitante();
+    // Sin almacenamiento no podemos distinguir visitantes: solo consultamos el total, sin contar.
+    var peticion = codigo ? peticionContador(url, { id: codigo }) : peticionContador(url);
+    peticion.then(function (datos) {
+      var personas = datos && datos.personas;
+      if (!Number.isInteger(personas)) return;
+      var texto = personas.toLocaleString('es-ES');
+      $('#contador-numero').textContent = texto;
+      $('#contador').setAttribute('aria-label', personas === 1 ? '1 persona ha visitado la web' : texto + ' personas han visitado la web');
+      $('#contador').hidden = false;
+    }, function () { /* sin servidor no mostramos el contador */ });
   }
 
   // ---------- Eventos ----------
@@ -1161,4 +1218,5 @@
   prepararPerfil();
   prepararJuego();
   prepararKiosco();
+  iniciarContador();
 })();
