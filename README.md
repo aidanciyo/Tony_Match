@@ -161,8 +161,8 @@ responde o no está configurada, el contador simplemente no aparece.
 
 **Puesta en marcha en tu servidor** (necesita Node.js 18 o superior: `node -v`):
 
-1. Copia la carpeta `contador/` a tu servidor, por ejemplo en `/opt/tony-match-contador/`, y
-   prepara la carpeta de datos:
+1. Copia `servidor.js` y `tony-match-contador.service` (están en `contador/`) a una carpeta de tu
+   servidor, por ejemplo `/opt/tony-match-contador/`, y prepara la carpeta de datos:
 
    ```bash
    sudo mkdir -p /opt/tony-match-contador/datos
